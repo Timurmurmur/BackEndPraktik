@@ -89,7 +89,7 @@ export const login = (login: String, password: String) => {
                 console.log("Логин или пароль не совподают");
                 return null;
             } else {
-                return user.id
+                return user
             }
         }).catch((err: Error) => console.log(err));
 }

@@ -10,3 +10,6 @@ const sequelize = new Sequelize('heroku_5025452c0c3de87', 'b64abaa6daff25', '108
     }
 });
 
+sequelize.sync().then((result: any) => {
+    console.log(result);
+}).catch((err: Error) => console.log(err));

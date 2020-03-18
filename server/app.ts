@@ -7,7 +7,7 @@ const app = express();
 const start = () => {
     try {
         app.listen(PORT, () => {
-            console.log(`Server listen port ${PORT}`);
+            console.log(`Сервер на ${PORT}`);
         });
     } catch (e) {
         console.log(e);

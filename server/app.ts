@@ -4,10 +4,10 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
-function start() {
+const start = () => {
     try {
-        app.listen(PORT, () =>{
-            console.log(`Server listen port ${PORT}`);
+        app.listen(PORT, () => {
+            console.log(`Сервер на ${PORT}`);
         });
     } catch (e) {
         console.log(e);

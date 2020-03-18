@@ -1,12 +1,13 @@
-const express = require('express');
-const bodyParser = require('body-parser');
+import express from 'express';
+import bodyParser from 'body-parser';
+import { post1 } from './routes/post';
+
 const PORT = process.env.PORT || 3000;
 const app = express();
-const { post1 } = require('./routes/post')
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/post', post)
+app.use('/post', post1)
 
 const start = () => {
     try {

@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
+import { Sequelize, DataTypes } from 'sequelize';
 //mysql://b64abaa6daff25:1084bbf9@eu-cdbr-west-02.cleardb.net/heroku_5025452c0c3de87?reconnect=true
 const sequelize = new Sequelize('heroku_5025452c0c3de87', 'b64abaa6daff25', '1084bbf9', {
     host: 'eu-cdbr-west-02.cleardb.net',

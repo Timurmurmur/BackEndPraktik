@@ -1,12 +1,27 @@
-const express = require('express');
+import express from 'express';
+import { getAllPosts, getPost, addPost, changePost, deletePost } from '../db/db'
+
 const post = express.Router();
 
-const post1 = post.get('/', (req: Request, res: any) => {
-    res.send('posts All');
+post.get('/', async (req: any, res: any) => {
+    const result = await getAllPosts();
+    res.json(result);
 });
-
-module.exports = { post1 }
-// post.post('/', (req: Request, res: any) => {
-//     res.send('add post');
-// });
+post.get('/:id', async (req: any, res: any) => {
+    const result = await getPost(req.params.id)
+    res.json(result)
+});
+post.post('/', async (req: any, res: any) => {
+    const result = await addPost(req.body.userId, req.body.title, req.body.post)
+    res.json(result);
+});
+post.put('/:id', async (req: any, res: any) => {
+    const result = await changePost(req.params.id, req.body)
+    res.json(result);
+});
+post.delete('/:id', async (req: any, res: any) => {
+    const result = await deletePost(req.params.id)
+    res.json(result);
+});
+export { post };
 

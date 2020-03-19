@@ -1,28 +1,34 @@
 import express from 'express';
-import { register, login, getUser, deleteUser, changeUser } from '../db/db'
+import { getUser, deleteUser, changeUser } from '../db/db'
 const user = express.Router();
 
-user.post('/register', async (req: any, res: any) => {
-    const type = 0;
-    const user = await register(req.body.login, req.body.password, req.body.nickname, req.body.email, type)
-    console.log(user);
-    res.json(user);//Тут должен был JWT
-})
-user.post('/login', async (req: any, res: any) => {
-    const user = await login(req.body.login, req.body.password)
-    console.log(user);
-    res.json(user);//Тут должен был JWT
-})
 user.get('/:id', async (req: any, res: any) => {
     const result = await getUser(req.params.id);
-    res.json(result);
+    if (result) {
+        res.json(result);
+    } else {
+        res.status(401).json({ error: 'Пользователя с таким ID нет' })
+    }
 })
 user.put('/:id', async (req: any, res: any) => {
-    const result = await changeUser(req.params.id, req.body);
-    res.json(result);
+    if (req.userId == req.params.id) {
+        const result = await changeUser(req.params.id, req.body);
+        if (result) {
+            const user = await getUser(req.params.id)
+            res.json(user);
+        } else {
+            res.status(401).json({ error: 'Ошибка' })
+        }
+    } else {
+        res.status(401).json({ error: 'Отказано в доступе' })
+    }
 })
 user.delete('/:id', async (req: any, res: any) => {
-    const result = await deleteUser(req.params.id);
-    res.json(result);
+    if (req.userId == req.params.id) {
+        const result = await deleteUser(req.params.id);
+        res.json(result);
+    } else {
+        res.status(401).json({ error: 'Отказано в доступе' })
+    }
 })
 export { user }

@@ -89,11 +89,10 @@ Users.hasMany(Posts, { onDelete: "cascade" });
 Users.hasMany(Comments, { onDelete: "cascade" });
 Posts.hasMany(Comments, { onDelete: "cascade" });
 
-export const login = async (login: string, password: string) => {
-    return await Users.findOne({ raw: true, where: { login, password } })
+export const login = async (login: string) => {
+    return await Users.findOne({ raw: true, where: { login } })
         .then((user: any) => {
             if (!user) {
-                console.log("Логин или пароль не совподают");
                 return null;
             } else {
                 return user
@@ -108,9 +107,20 @@ export const register = async (login: string, password: string, nickname: string
         nickname,
         email,
         type
-    }, { raw: true }).then((res: Object) => {
+    }, { raw: true }).then((res: any) => {
         return res;
     }).catch((err: Error) => console.log(err));
+}
+
+export const availableLogin = async (login: string) => {
+    return await Users.findOne({ raw: true, where: { login } })
+        .then((user: any) => {
+            if (!user) {
+                return true;
+            } else {
+                return false
+            }
+        }).catch((err: Error) => console.log(err));
 }
 
 export const getUser = async (id: number) => {
@@ -137,9 +147,8 @@ export const deleteUser = async (id: number) => {
 export const changeUser = async (id: number, data: Object) => {
     return await Users.update(data, {
         where: { id }
-    }).then((res: Array<any>) => {
-        console.log(res[0]);
-        return res[0];
+    }).then((res: any) => {
+        return res;
     });
 }
 
@@ -199,8 +208,8 @@ export const getPostsByUser = async (userId: number) => {
 export const changePost = async (id: number, data: Object) => {
     return await Posts.update(data, {
         where: { id }
-    }).then((res: Array<any>) => {
-        return res[0];
+    }).then((res: any) => {
+        return res;
     });
 }
 

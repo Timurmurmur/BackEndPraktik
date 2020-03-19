@@ -10,9 +10,6 @@ const sequelize = new Sequelize('heroku_5025452c0c3de87', 'b64abaa6daff25', '108
     }
 });
 
-// sequelize.sync().then(() => {
-//     console.log("База данных синхронизированна");
-// }).catch((err: Error) => console.log(err));
 class Users extends Model { }
 class Posts extends Model { }
 class Comments extends Model { }
@@ -24,7 +21,7 @@ Users.init({
         allowNull: false
     },
     login: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     password: {
@@ -40,7 +37,7 @@ Users.init({
         allowNull: false
     },
     type: { //0 - user, 1 - admin
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false
     },
     avatar: {
@@ -60,7 +57,7 @@ Posts.init({
         allowNull: false
     },
     title: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         allowNull: false
     },
     post: {
@@ -93,7 +90,7 @@ Users.hasMany(Comments, { onDelete: "cascade" });
 Posts.hasMany(Comments, { onDelete: "cascade" });
 
 export const login = async (login: string, password: string) => {
-    return await Users.findOne({ where: { login, password } })
+    return await Users.findOne({ raw: true, where: { login, password } })
         .then((user: any) => {
             if (!user) {
                 console.log("Логин или пароль не совподают");
@@ -111,12 +108,23 @@ export const register = async (login: string, password: string, nickname: string
         nickname,
         email,
         type
-    }).then((res: Object) => {
+    }, { raw: true }).then((res: Object) => {
         return res;
     }).catch((err: Error) => console.log(err));
 }
 
-export const deliteUser = async (id: number) => {
+export const getUser = async (id: number) => {
+    return await Users.findOne({ raw: true, where: { id } })
+        .then((user: any) => {
+            if (!user) {
+                return null;
+            } else {
+                return user
+            }
+        }).catch((err: Error) => console.log(err));
+}
+
+export const deleteUser = async (id: number) => {
     return await Users.destroy({
         where: {
             id
@@ -229,7 +237,7 @@ export const getAllCommentsByPost = async (postId: number) => {
         }).catch((err: Error) => console.log(err));
 }
 
-export const deliteCommment = async (id: number) => {
+export const deleteCommment = async (id: number) => {
     return await Comments.destroy({
         where: {
             id

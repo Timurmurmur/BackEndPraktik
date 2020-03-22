@@ -3,14 +3,15 @@ import bodyParser from 'body-parser';
 import { post } from './routes/post';
 import { user } from './routes/user';
 import { auth } from './routes/auth';
+import { comments } from './routes/comment'
 const authMiddleWare = require('./middleware/auth')
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use('/api/auth', auth)
+app.use('/api/comment', authMiddleWare, comments)
 app.use('/api/post', authMiddleWare, post)
 app.use('/api/user', authMiddleWare, user)
 

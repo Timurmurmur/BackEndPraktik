@@ -166,7 +166,6 @@ export const getPost = async (id: number) => {
     return await Posts.findByPk(id)
         .then((post: any) => {
             if (!post) {
-                console.log("Такого поста нет");
                 return null;
             } else {
                 return post;
@@ -254,4 +253,14 @@ export const deleteCommment = async (id: number) => {
     }).then((res: number) => {
         return res
     })
+}
+export const getCommment = async (id: number) => {
+    return await Comments.findByPk(id)
+        .then((com: any) => {
+            if (!com) {
+                return null;
+            } else {
+                return com;
+            }
+        }).catch((err: Error) => console.log(err));
 }

@@ -1,7 +1,17 @@
 import express from 'express';
-import { getUser, deleteUser, changeUser } from '../db/db'
+import { getUser, deleteUser, changeUser, getPostsByUser } from '../db/db'
 const user = express.Router();
 
+
+
+user.get('/posts', async (req: any, res: any) => {
+    const posts = await getPostsByUser(req.userId);
+    if (posts) {
+        res.json(posts);
+    } else {
+        res.json({ error: 'Нет статей' })
+    }
+})
 user.get('/:id', async (req: any, res: any) => {
     const result = await getUser(req.params.id);
     if (result) {

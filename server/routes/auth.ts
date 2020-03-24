@@ -8,6 +8,7 @@ const { secret } = require('../config/secret')
 const auth = express.Router();
 
 auth.post('/register', async (req: any, res: any) => {
+    console.log(req);
     const type = 0;
     const available = await availableLogin(req.body.login);
     if (available) {
@@ -19,7 +20,9 @@ auth.post('/register', async (req: any, res: any) => {
     }
 })
 auth.post('/login', async (req: any, res: any) => {
+    console.log(req);
     const user = await login(req.body.login)
+    console.log(user);
     if (!user) {
         res.status(401).json({ Error: "Пользователя с таким логином нет" })
     } else {

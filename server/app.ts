@@ -4,11 +4,22 @@ import { post } from './routes/post';
 import { user } from './routes/user';
 import { auth } from './routes/auth';
 import { comments } from './routes/comment'
+import cors from 'cors';
+
 const authMiddleWare = require('./middleware/auth')
 
 const PORT = process.env.PORT || 3000;
 const app = express();
-
+app.use(
+    cors({
+      allowedHeaders: ["sessionId", "Content-Type"],
+      exposedHeaders: ["sessionId"],
+      origin: "*",
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+      preflightContinue: false
+    })
+  );
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/auth', auth)
 app.use('/api/comment', authMiddleWare, comments)

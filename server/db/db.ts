@@ -173,6 +173,17 @@ export const getPost = async (id: number) => {
         }).catch((err: Error) => console.log(err));
 }
 
+export const getPostsByTitle = async (title: any) => {
+    return await Posts.findAll({ where: { title }, raw: true })
+        .then((post: any) => {
+            if (!post) {
+                return null;
+            } else {
+                return post;
+            }
+        }).catch((err: Error) => console.log(err));
+}
+
 export const getAllPosts = async () => {
     return await Posts.findAll({ raw: true })
         .then((posts: any) => {

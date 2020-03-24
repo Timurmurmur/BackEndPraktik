@@ -1,11 +1,22 @@
 import express from 'express';
-import { getAllPosts, getPost, addPost, changePost, deletePost } from '../db/db'
+import { getAllPosts, getPost, addPost, changePost, deletePost, getPostsByTitle } from '../db/db'
 
 const post = express.Router();
 
 post.get('/', async (req: any, res: any) => {
-    const posts = await getAllPosts();
-    res.json(posts);
+    if (req.body.title) {
+        const post = await getPostsByTitle(req.body.title)
+        if (post) {
+            res.json(post)
+        } else {
+            res.status(401).json({ error: 'Поста с таким заголовком нет' })
+        }
+    } else {
+        const posts = await getAllPosts();
+        res.json(posts);
+    }
+
+
 });
 post.get('/:id', async (req: any, res: any) => {
     const post = await getPost(req.params.id)

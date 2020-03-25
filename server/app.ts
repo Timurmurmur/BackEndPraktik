@@ -8,7 +8,7 @@ import cors from 'cors';
 
 const authMiddleWare = require('./middleware/auth')
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 80;
 const app = express();
 app.use(
     cors({

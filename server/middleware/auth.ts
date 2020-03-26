@@ -1,8 +1,12 @@
 const jwt = require('jsonwebtoken')
 import { secret } from '../config/secret';
 
-module.exports = (req: any, res: any, next: Function) => {
+export const authMiddleWare = (req: any, res: any, next: Function) => {
     const token = req.get('token');
+    console.log(req.headers);
+    if(req.method === "OPTIONS") {
+        next();
+    }
     if (!token) {
         res.status(401).json({ error: 'Токен отсутствует' });
     } else {

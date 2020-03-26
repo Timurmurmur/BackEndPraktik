@@ -15,8 +15,6 @@ post.get('/', async (req: any, res: any) => {
         const posts = await getAllPosts();
         res.json(posts);
     }
-
-
 });
 post.get('/:id', async (req: any, res: any) => {
     const post = await getPost(req.params.id)

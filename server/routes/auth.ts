@@ -29,7 +29,7 @@ auth.post('/login', async (req: any, res: any) => {
         const isVlid = bCrypt.compareSync(req.body.password, user.password);
         if (isVlid) {
             const token = jwt.sign({ id: user.id.toString() }, secret)
-            res.json({ token })
+            res.json({ token, userId : user.id.toString() })
         } else {
             res.status(401).json({ error: "Не верный пароль" })
         }

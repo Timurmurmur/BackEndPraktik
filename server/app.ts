@@ -5,18 +5,19 @@ import { user } from './routes/user';
 import { auth } from './routes/auth';
 import { comments } from './routes/comment'
 import cors from 'cors';
+import { authMiddleWare } from './middleware/auth';
 
-const authMiddleWare = require('./middleware/auth')
 
-const PORT = 80;
+const PORT = process.env.PORT || 80;
 const app = express();
 app.use(
     cors({
-      allowedHeaders: ["sessionId", "Content-Type"],
-      exposedHeaders: ["sessionId"],
+      allowedHeaders: ["sessionId", "Content-Type", "token"],
+      exposedHeaders: ["sessionId", "token"],
       origin: "*",
-      methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-      preflightContinue: false
+      methods: "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+      preflightContinue: true,
+      optionsSuccessStatus: 204
     })
   );
 app.use(bodyParser.json());

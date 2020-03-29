@@ -8,10 +8,11 @@ comments.post('/', async (req: any, res: any) => {
     const com = await addComment(postId, req.userId, comment);
     res.json(com);
 })
-comments.get('/', async (req: any, res: any) => {
+comments.post('/all', async (req: any, res: any) => {
     const post = await getPost(req.body.postId);
     if (post) {
-        const comments = await getAllCommentsByPost(req.body.postId)
+        const comments = await getAllCommentsByPost(req.body.postId);
+        console.log(comments);
         res.json(comments);
     } else {
         res.status(401).json({ error: 'Поста с таким ID нет' })

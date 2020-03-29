@@ -4,7 +4,11 @@ import { getAllPosts, getPost, addPost, changePost, deletePost, getPostsByTitle 
 const post = express.Router();
 
 post.get('/', async (req: any, res: any) => {
-    if (req.body.title) {
+    const posts = await getAllPosts();
+    res.json(posts);
+});
+post.post('/search', async (req: any, res:any) => {
+    if(req.body.title){
         const post = await getPostsByTitle(req.body.title)
         if (post) {
             res.json(post)
@@ -12,8 +16,7 @@ post.get('/', async (req: any, res: any) => {
             res.status(401).json({ error: 'Поста с таким заголовком нет' })
         }
     } else {
-        const posts = await getAllPosts();
-        res.json(posts);
+        res.status(401).json({error: 'Укажите заголовок!'})
     }
 });
 post.get('/:id', async (req: any, res: any) => {

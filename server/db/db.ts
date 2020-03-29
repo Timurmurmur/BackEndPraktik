@@ -79,6 +79,10 @@ Comments.init({
     comment: {
         type: DataTypes.TEXT,
         allowNull: false
+    },
+    userId: {
+        type: DataTypes.INTEGER,
+        references: { model: 'users', key: 'id' },
     }
 }, {
     sequelize,
@@ -244,16 +248,16 @@ export const addComment = async (postId: number, userId: number, comment: string
 }
 
 export const getAllCommentsByPost = async (postId: number) => {
-    return await Comments.findAll({ raw: true, where: { postId } })
+    let comments = await Users.findAll({ include: [{model: Comments, where: { postId }}]})
         .then((comments: any) => {
             if (!comments) {
                 console.log("Комментариев нет");
                 return null;
             } else {
-                console.log(comments);
                 return comments;
             }
         }).catch((err: Error) => console.log(err));
+    return comments;
 }
 
 export const deleteCommment = async (id: number) => {

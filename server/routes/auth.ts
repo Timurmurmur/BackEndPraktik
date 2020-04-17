@@ -14,7 +14,7 @@ auth.post('/register', async (req: any, res: any) => {
     if (available) {
         const user = await register(req.body.login, bCrypt.hashSync(req.body.password, salt), req.body.nickname, req.body.email, type);
         const token = jwt.sign({ id: user.id.toString() }, secret)
-        res.json({ token })
+        res.json({ token, id:user.id })
     } else {
         res.status(401).json({ error: 'Логин занят' })
     }
